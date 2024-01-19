@@ -1,0 +1,14 @@
+<launch>
+    <!-- Launch an EKF for `object_name` -->
+    <arg name="object_name"/>
+
+    <!-- Augment the pose readings with velocity estimates via an EKF -->
+    <node pkg="robot_localization" type="ekf_localization_node" name="$(arg object_name)_ekf" clear_params="true">
+    <rosparam command="load" file="$(find hackathon)/config/object_ekf.yaml"/>
+    <param name="odom_frame" value="$(arg object_name)_odom"/>
+    <param name="base_link_output" value="$(arg object_name)_base_link"/>
+    <remap from="pose" to="/vicon/$(arg object_name)" />
+    <remap from="/odometry/filtered" to="/$(arg object_name)/odometry"/>
+    </node>
+
+</launch>
